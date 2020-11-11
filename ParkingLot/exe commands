@@ -1,0 +1,157 @@
+
+
+
+
+
+
+import sys
+sys.setrecursionlimit(500000)
+
+
+The MATPLOTLIBDATA environment variable was deprecated in Matplotlib 3.1 and will be removed in 3.3.
+  exec(bytecode, module.__dict__)
+Traceback (most recent call last):
+  File "UA Long Form.py", line 44, in <module>
+NameError: name 'sdata' is not defined
+[11768] Failed to execute script UA Long Form
+
+
+c:\users\gharmo\anaconda3\lib\site-packages\PyInstaller\loader\pyimod03_importers.py:493: MatplotlibDeprecationWarning:
+The MATPLOTLIBDATA environment variable was deprecated in Matplotlib 3.1 and will be removed in 3.3.
+  exec(bytecode, module.__dict__)
+Traceback (most recent call last):
+  File "UA Long Form.py", line 18, in <module>
+FileNotFoundError: [WinError 3] The system cannot find the path specified: 'C:\\Users\\gharmo\\PycharmProjects\\Upload Assistant\\Lib\\Template\\dist'
+[1896] Failed to execute script UA Long Form
+
+
+
+c:\users\gharmo\anaconda3\lib\site-packages\PyInstaller\loader\pyimod03_importers.py:493: MatplotlibDeprecationWarning:
+The MATPLOTLIBDATA environment variable was deprecated in Matplotlib 3.1 and will be removed in 3.3.
+  exec(bytecode, module.__dict__)
+Traceback (most recent call last):
+  File "UA Long Form.py", line 18, in <module>
+FileNotFoundError: [WinError 3] The system cannot find the path specified: 'C:\\Users\\gharmo\\PycharmProjects\\Upload Assistant\\Lib\\Submission\\dist'
+[16776] Failed to execute script UA Long Form
+
+
+
+c:\users\gharmo\anaconda3\lib\site-packages\PyInstaller\loader\pyimod03_importers.py:493: MatplotlibDeprecationWarning:
+The MATPLOTLIBDATA environment variable was deprecated in Matplotlib 3.1 and will be removed in 3.3.
+  exec(bytecode, module.__dict__)
+Traceback (most recent call last):
+  File "UA Long Form.py", line 18, in <module>
+FileNotFoundError: [WinError 3] The system cannot find the path specified: 'C:\\Users\\gharmo\\PycharmProjects\\Upload Assistant\\Lib\\Submission\\\\UA Long Form'
+[
+ cd "C:\\Users\\gharmo\\PycharmProjects\\Upload Assistant\\docs"
+
+ cd "C:\\Users\\gharmo\\PycharmProjects\\Upload Assistant\\Scripts"
+
+
+ pyinstaller.exe --onefile "C:\Users\gharmo\PycharmProjects\uploadassistantproj\uploadassistant\main.spec"
+
+
+
+
+
+
+  python "C:\Users\gharmo\PycharmProjects\Upload Assistant\Scripts\UA Long Form.py"
+
+ "C:\Users\gharmo\PycharmProjects\Upload Assistant\docs\_build\html\index.html"
+
+
+
+ pyinstaller.exe --onefile "C:\Users\gharmo\PycharmProjects\Upload Assistant\UA Long Form.spec" --exclude-module alabaster ^
+--exclude-module babel ^
+--exclude-module bcrypt ^
+--exclude-module bokeh ^
+--exclude-module certifi ^
+--exclude-module cryptography ^
+--exclude-module cryptography-2.8-py3.7.egg-info ^
+--exclude-module Cython ^
+--exclude-module cytoolz ^
+--exclude-module dask ^
+--exclude-module docutils ^
+--exclude-module etc ^
+--exclude-module gevent ^
+--exclude-module gevent-1.4.0-py3.7.egg-info ^
+--exclude-module h5py ^
+--exclude-module importlib_metadata-1.5.0-py3.7.egg-info ^
+--exclude-module Include ^
+--exclude-module IPython ^
+--exclude-module jedi ^
+--exclude-module jsonschema ^
+--exclude-module jsonschema-3.2.0-py3.7.egg-info ^
+--exclude-module lib2to3 ^
+--exclude-module llvmlite ^
+--exclude-module lxml ^
+--exclude-module msgpack ^
+--exclude-module nacl ^
+--exclude-module nbconvert ^
+--exclude-module nbconvert-5.6.1-py3.7.egg-info ^
+--exclude-module nbformat ^
+--exclude-module notebook ^
+--exclude-module numba ^
+--exclude-module numexpr ^
+--exclude-module psutil ^
+--exclude-module pyarrow ^
+--exclude-module PyQt5 ^
+--exclude-module pytz ^
+--exclude-module scipy ^
+--exclude-module share ^
+--exclude-module sphinx ^
+--exclude-module sqlalchemy ^
+--exclude-module statsmodels ^
+--exclude-module tables ^
+--exclude-module tornado ^
+--exclude-module win32com ^
+--exclude-module winpty ^
+--exclude-module zmq
+
+
+mkl_core.dll
+
+
+ pyinstaller.exe --onefile "C:\Users\gharmo\PycharmProjects\Upload Assistant\UA Long Form.spec"
+
+
+pyinstaller --onefile -w -F -i "UAclipboard.ico"  "C:\Users\gharmo\PycharmProjects\Upload Assistant\Scripts\Upload Assistant.spec"
+
+pyinstaller --onefile -w -F -i "UAclipboard.ico"  "C:\Users\gharmo\PycharmProjects\DataCollectionAssistant\Upload Assistant.spec"
+pyinstaller --onefile -w -F -i "UAclipboard.ico"  "C:\Users\gharmo\PycharmProjects\DataCollectionAssistant\DataCollectionAssistant\main.spec"
+ pyinstaller --onefile -w -F -i "UAclipboard.ico"  "C:\Users\gharmo\PycharmProjects\uploadassistantproj\uploadassistant\main.spec"
+
+
+
+Minimal Package install
+
+
+libopenblas.NOIJJG62EMASZI6NYURL6JBKM4EVBGM7.gfortran-win_amd64.dll
+
+          a.binaries - TOC([ ('arrow.dll', None, None), ('mkl_avx512.dll', None, None), ('icudt58.dll', None, None), ('libmmd.dll', None, None), ('mfc140u.dll', None, None), ('mkl_avx.dll', None, None), ('mkl_avx2.dll', None, None), ('mkl_core.dll', None, None), ('mkl_def.dll', None, None), ('mkl_mc.dll', None, None), ('mkl_mc3.dll', None, None), ('mkl_pgi_thread.dll', None, None), ('mkl_rt.dll', None, None), ('mkl_scalapack_ilp64.dll', None, None), ('mkl_scalapack_lp64.dll', None, None), ('mkl_sequential.dll', None, None), ('mkl_tbb_thread.dll', None, None), ('mkl_vml_avx.dll', None, None), ('mkl_vml_avx2.dll', None, None), ('mkl_vml_avx512.dll', None, None), ('mkl_vml_cmpt.dll', None, None), ('mkl_vml_def.dll', None, None), ('', None, None), ('mkl_vml_mc.dll', None, None), ('mkl_vml_mc2.dll', None, None), ('mkl_vml_mc3.dll', None, None), ('opengl32sw.dll', None, None), ('Qt5Core.dll', None, None), ('Qt5Gui.dll', None, None), ('Qt5Widgets.dll', None, None) ,('arrow_flight.dll', None, None), ('arrow_python.dll', None, None), ('hdf5.dll', None, None), ('iconv.dll', None, None), ('icuin58.dll', None, None), ('icuuc58.dll', None, None), ('libcrypto-1_1-x64.dll', None, None), ('libifcoremd.dll', None, None), ('libiomp5md.dll', None, None), ('libprotobuf.dll', None, None), ('libxml2.dll', None, None), ('parquet.dll', None, None), ('Qt5Network.dll', None, None), ('Qt5Qml.dll', None, None), ('Qt5Quick.dll', None, None), ('sqlite3.dll', None, None), ('tcl86t.dll', None, None), ('tk86t.dll', None, None), ('ucrtbase.dll', None, None), ('winpty.dll', None, None)     ]),
+          a.zipfiles,
+
+
+git push --force origin master
+
+
+python -m pip install matplotlib==3.0.3
+
+
+
+
+fresh install
+
+pip install Cerberus
+pip install pywin32
+pip install mouse
+pip install numpy
+pip install pandas
+pip install pandastable
+python -m pip install matplotlib==3.0.3
+pip install pyinstaller==3.6
+pip install nicexcel
+
+
+
+
