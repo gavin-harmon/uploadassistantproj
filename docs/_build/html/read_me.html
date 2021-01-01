@@ -37,7 +37,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="License" href="license.html" />
-    <link rel="prev" title="Global Portfolio Monitoring’s Upload Assistant package" href="index.html" /> 
+    <link rel="prev" title="GitLab Respository Link" href="Repository.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -84,7 +84,15 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Read Me</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Repository.html">GitLab Respository Link</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Read Me</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#repository-description"><strong>Repository description:</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#folder-structure-with-descriptions"><strong>Folder structure with descriptions:</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#uploadassistant-content-descriptions"><strong>/uploadassistant content descriptions:</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#conda-env-instructions">conda env instructions:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pyinstaller-creation-of-exe">pyinstaller creation of exe</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules.html">Upload Assistant package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="help.html">Help</a></li>
@@ -155,25 +163,155 @@
             
   <div class="section" id="read-me">
 <h1>Read Me<a class="headerlink" href="#read-me" title="Permalink to this headline">¶</a></h1>
-<p>Welcome to the 2020 Q3 Data Collection – Gross of Reinsurance view  Upload Assistant.</p>
-<p>You should be the user(s) whom compiles the data for the regularly scheduled Global Portfolio Monitoring (GPM) data request.</p>
-<dl class="simple">
-<dt>GPM thanks you for your work in providing Global Travel Leadership this vital reporting. We value your time and effort.</dt><dd><dl class="simple">
-<dt>This application is meant to:</dt><dd><ol class="arabic simple">
-<li><p>provide you resources to make this process as simple and transparent as it can be,</p></li>
-<li><p>maximize the impact of your efforts,</p></li>
-<li><p>and identify process or technology limitations that impede gathering relevant data.</p></li>
-</ol>
+<div class="section" id="repository-description">
+<h2><strong>Repository description:</strong><a class="headerlink" href="#repository-description" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><p>If you clone this repository to a local machine you will be able to run the Upload Assistant from uploadassistant\main.py or run the application in Windows by starting the file uploadassistant\dist\Upload Assistant.exe</p>
+<p>If you need to create the .exe version that was sent November 2020 as part of the data collection you must set up a conda environment as explained at the bottom of this document.</p>
+</div></blockquote>
+</div>
+<div class="section" id="folder-structure-with-descriptions">
+<h2><strong>Folder structure with descriptions:</strong><a class="headerlink" href="#folder-structure-with-descriptions" title="Permalink to this headline">¶</a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 54%" />
+<col style="width: 46%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>/.idea</strong></p></td>
+<td><p>System folder, do not edit here.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>/docs</strong></p></td>
+<td><p>The project documentation files built in sphinx,
+launch with file docs\build\html\index.html.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>/ParkingLot</strong></p></td>
+<td><p>Contains a few files removed from the final
+project. Importing from different documents
+added complexity to the creation of the .exe
+version, so some of these files were
+incorperated in main.py</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>/uploadassistant</strong></p></td>
+<td><p>The main project folder. you can run the final
+version of the file from \uploadassistant\
+dist\Upload Assistant.exe of view or run a
+script version from uploadassistant\main.py.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="uploadassistant-content-descriptions">
+<h2><strong>/uploadassistant content descriptions:</strong><a class="headerlink" href="#uploadassistant-content-descriptions" title="Permalink to this headline">¶</a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 37%" />
+<col style="width: 63%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>/.ipynb_checkpoints</strong></p></td>
+<td><p>System folder, do not edit.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>/Archive</strong></p></td>
+<td><p>Discarded files.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>/dist</strong></p></td>
+<td><p>Contains pyinstaller output (working .exe).</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>/Images</strong></p></td>
+<td><p>Contains images used in application and script.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>/Output</strong></p></td>
+<td><p>Location where the script and application will create json output files for GPM to load into
+the database.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>/QA Resources</strong></p></td>
+<td><p>Files a developer can use for testing in a running script/application.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>/Report</strong></p></td>
+<td><p>Location where the script/application will create a user report of summary data.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>/Resources</strong></p></td>
+<td><p>Resources to aid the Upload Assistant end user in creation of the data collection submission, this
+contains folders that are custom to certain countries.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>/Submission</strong></p></td>
+<td><p>Location where the user saves completed version of thier template to be evaluated by the
+Upload Assistant.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>/Template</strong></p></td>
+<td><p>The starting version of the document to be completed and saved in the submission folder.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>/__pycache__</strong></p></td>
+<td><p>System folder, do not edit.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="conda-env-instructions">
+<h2>conda env instructions:<a class="headerlink" href="#conda-env-instructions" title="Permalink to this headline">¶</a></h2>
+<p>In order to create a stable exe application with pyinstaller it was found to be necessary to create a very specific environment with a combination of package versions. If you do not recreate the environment exactly, make sure you are testing that your exe file workd on other users’ laptops. A known issue with the venv and up-to-date version as of October 2020 is a working application that will not open on other users’ computers.</p>
+<p>These instructions are for PyCharm Community. If you edit python in another IDE you may need to adjust these.</p>
+<dl>
+<dt><strong>1.</strong></dt><dd><p>Follow these instructions to setup a conda based Python 3.6 environment in any folder you choose. <a class="reference external" href="https://uoa-eresearch.github.io/eresearch-cookbook/recipe/2014/11/20/conda/">https://uoa-eresearch.github.io/eresearch-cookbook/recipe/2014/11/20/conda/</a>  - if link is broken, find instructions by googling “set up a python 3.6 conda environment” after cloning this GitLab repository <a class="reference external" href="https://gitlab.gda.allianz/azpatravel/GHARMO.gitlab.io.git">https://gitlab.gda.allianz/azpatravel/GHARMO.gitlab.io.git</a> , open the folder “uploadassistantproj” as a new project in PyCharm.</p>
+<p>Do not create a new virtual environment.</p>
+</dd>
+<dt><strong>2.</strong></dt><dd><p>Open uploadassistantproj\uploadassistant\main.py in the editor.
+Edit the configuration (button at top right).
+<a href="#id1"><span class="problematic" id="id2">*</span></a>For detailed PyCharm instructions reference <a class="reference external" href="https://www.jetbrains.com/help/pycharm/quick-start-guide.html">https://www.jetbrains.com/help/pycharm/quick-start-guide.html</a>.</p>
+</dd>
+<dt><strong>3.</strong></dt><dd><p>Add a new configuration (“+” sign on menu), select the conda environment you created.
+Make sure the working directory is [replace with your local address]uploadassistantprojuploadassistant
+Click ok and apply and make sure that the configuration can read files. (run a sample file that says print(“hello”) from editor, etc)</p>
+</dd>
+<dt><strong>4.</strong></dt><dd><p>From the terminal install these packages one at a time. (Do not use the standard venv project interpreter menu)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span><span class="n">pip</span> <span class="n">install</span> <span class="n">Cerberus</span>
+<span class="o">-</span><span class="n">pip</span> <span class="n">install</span> <span class="n">pywin32</span>
+<span class="o">-</span><span class="n">pip</span> <span class="n">install</span> <span class="n">mouse</span>
+<span class="o">-</span><span class="n">pip</span> <span class="n">install</span> <span class="n">numpy</span>
+<span class="o">-</span><span class="n">pip</span> <span class="n">install</span> <span class="n">pandas</span>
+<span class="o">-</span><span class="n">pip</span> <span class="n">install</span> <span class="n">pandastable</span>
+<span class="o">-</span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">matplotlib</span><span class="o">==</span><span class="mf">3.0</span><span class="o">.</span><span class="mi">3</span>
+<span class="o">-</span><span class="n">pip</span> <span class="n">install</span> <span class="n">pyinstaller</span><span class="o">==</span><span class="mf">3.6</span>
+<span class="o">-</span><span class="n">pip</span> <span class="n">install</span> <span class="n">nicexcel</span>
+</pre></div>
+</div>
+<p>If there are any missing packages when you run main.py install them in the same method.
+If main.py launches, your environment is working properly.</p>
 </dd>
 </dl>
+</div>
+<div class="section" id="pyinstaller-creation-of-exe">
+<h2>pyinstaller creation of exe<a class="headerlink" href="#pyinstaller-creation-of-exe" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt><strong>1.</strong></dt><dd><p>From the console run this line:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">replace</span> <span class="k">with</span> <span class="n">your</span> <span class="n">local</span> <span class="n">address</span><span class="p">]</span><span class="n">uploadassistantproj</span>\<span class="n">uploadassistant</span><span class="o">&gt;</span>  <span class="n">pyinstaller</span> <span class="o">--</span><span class="n">onefile</span> <span class="o">-</span><span class="n">w</span> <span class="o">-</span><span class="n">F</span> <span class="o">-</span><span class="n">i</span> <span class="s2">&quot;UAclipboard.ico&quot;</span>  <span class="s2">&quot;[replace with your local address]uploadassistantproj\uploadassistant\main.py&quot;</span>
+</pre></div>
+</div>
+<p>this will create a new file in uploadassistantprojuploadassistantdist(or it may error out, that’s ok!)
+The file that is created, it may have features that are not wanted, or it may be a directory with many files, or the process may have thrown a recursion error.</p>
 </dd>
 </dl>
-<p>Depending on several factors we expect that gathering and preparing this data may take several work days or more.</p>
-<p>Please launch the application with the “Upload Assistant Shortcuts.vbs” or the main application named “Upload Assistant.exe” in the “dist” folder.</p>
-<p>If the application launches, start by reading the instructions privded on the instructions page. If you have trouble opening the application or are lost at any point contact GPM at</p>
-<p><a class="reference external" href="mailto:gavin&#46;harmon&#37;&#52;&#48;aliianz&#46;com">gavin<span>&#46;</span>harmon<span>&#64;</span>aliianz<span>&#46;</span>com</a> and <a class="reference external" href="mailto:dana&#46;mark&#37;&#52;&#48;allianz&#46;com">dana<span>&#46;</span>mark<span>&#64;</span>allianz<span>&#46;</span>com</a></p>
-<p>Thank you,</p>
-<p>Global Portfolio Monitoring</p>
+<p><strong>Here is what to do next.</strong>
+<strong>2.</strong></p>
+<blockquote>
+<div><p>find the file “uploadassistantprojuploadassistantmain.spec” (Not main.py!!)
+open this link and compare the two files
+<a class="reference external" href="https://gitlab.gda.allianz/azpatravel/GHARMO.gitlab.io/-/blob/master/uploadassistant/main.spec">https://gitlab.gda.allianz/azpatravel/GHARMO.gitlab.io/-/blob/master/uploadassistant/main.spec</a>
+Take the custom options from the GitLab version and apply them to your default options. Start with the first 2 lines, they well prevent</p>
+<blockquote>
+<div><p>the recursion limit error.</p>
+</div></blockquote>
+</div></blockquote>
+<dl>
+<dt><strong>3.</strong></dt><dd><p>Finally, in the console run the line [Only change from the last time is it ends with “.spec” vs “.py”]:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">replace</span> <span class="k">with</span> <span class="n">your</span> <span class="n">local</span> <span class="n">address</span><span class="p">]</span><span class="n">uploadassistantproj</span>\<span class="n">uploadassistant</span><span class="o">&gt;</span>  <span class="n">pyinstaller</span> <span class="o">--</span><span class="n">onefile</span> <span class="o">-</span><span class="n">w</span> <span class="o">-</span><span class="n">F</span> <span class="o">-</span><span class="n">i</span> <span class="s2">&quot;UAclipboard.ico&quot;</span>  <span class="s2">&quot;[replace with your local address]uploadassistantproj\uploadassistant\main.spec&quot;</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>If everything has been done correctly you will have created an application in the dist folder that will run on a standard Windows computer.</p>
+</div>
 </div>
 
 
@@ -187,7 +325,7 @@
         <a href="license.html" class="btn btn-neutral float-right" title="License" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="index.html" class="btn btn-neutral float-left" title="Global Portfolio Monitoring’s Upload Assistant package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="Repository.html" class="btn btn-neutral float-left" title="GitLab Respository Link" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

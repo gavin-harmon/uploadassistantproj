@@ -7,18 +7,18 @@ This current and only version is for the Data Collect request planned for Novemb
 Analyst end users are provided immediate report views, validations, and opportunities to note and provide feedback.
 
 
-"README.txt" provides basic end user instructions. Initialize the application by running "main.py".
+
 
 .. toctree::
    :maxdepth: 4
    :caption: Contents:
    
+
+   Repository
    read_me
    license
    modules
    help
-
-
 
 
 Indices and tables

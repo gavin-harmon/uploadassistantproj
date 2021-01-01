@@ -1,5 +1,6 @@
 """
-This is the primary script. It is in development currently.
+This this module creates the Upload Assistant. See the READ ME for instructions on how to deploy it into a Windows exe
+application
 
 Any changes to this document need to tested to 1) execute in the console 2) execute from the terminal
 and 3) have a functional, shareable .exe output via pyinstaller
@@ -10,26 +11,26 @@ and 3) have a functional, shareable .exe output via pyinstaller
 # libraries and modules used
 
 import os
-import sys
-import win32com.client as win32
-from datetime import datetime
-import mouse
-import time
-import numpy as np
-import pandas as pd
-import glob
-import json
-import tkinter as tk
+import sys # these two allow python to make system commands like run
+import win32com.client as win32 # to open outlook
+from datetime import datetime # for times
+import mouse #interacts with a users mouse
+import time # more time
+import numpy as np # stats package
+import pandas as pd # data package
+import glob #finds all the pathnames matching a specified pattern
+import json #reads and exports json
+import tkinter as tk #GUI package
 from tkinter import *
 from tkinter import ttk
-from PIL import ImageTk,Image
-from pandastable import Table, TableModel
-import importlib
-from cerberus import Validator
-import nicexcel as nl
+from PIL import ImageTk, Image #pillow image utilities for tkinter
+from pandastable import Table, TableModel #pillow image utilities for tkinter
+import importlib# part of the outlook email process
+from cerberus import Validator# runs validation section
+import nicexcel as nl# output excel in report format
 import zipfile
-from zipfile import ZipFile
-from os.path import basename
+from zipfile import ZipFile # make zip files
+from os.path import basename #file path references
 
 """data import modules"""
 global vdata, sdata, comlist, vmessagelist, sublist, vn, collist, cleared, rownums, vdflist, vlock, spath, bgimage, instimage, reports_dict, reports_dict_float
@@ -41,40 +42,44 @@ if hasattr(sys, 'frozen'):
 else:
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
-"""main directory"""
+
 path = os.getcwd().replace("dist", "")
+#main directory
 
-"""Submission folder"""
 spath = os.path.join( path, "Submission")
+#Submission folder
 
-"""Template folder"""
 
 tpath = os.path.join( path, "Template")
+#Template folder
 
-"""Import Background"""
 bgimage = os.path.join( path, "Images/bg5.png")
-
+#Import Background
 
 attachpath = os.path.join(path, "Output")
 attachzip = os.path.join(path, "Output.zip")
 distzip = os.path.join(path, "dist/Output.zip")
-
 # create a ZipFile object
 
 
 
-# empty set to deactivate button response
+
 llock = {1}
 vn=0
 vlock = {}
+# empty set to deactivate button response
+# if the script has been run on the screen, this will be locked and not run again, the user pressing "back" unlocks
+# this by setting llock={}
 
-# if the script has been run on the screen, this will be locked and not run again, the user pressing "back" unlocks this by setting llock={}
 def lock():
+    """This is called at various points, usually after actions, so that they do not repeat. If len(llock) ==1 then
+    do nothing."""
     global llock
     llock = {1}
 
 
 def unlock(self):
+    """This is called at various points, usually after actions, to allow processes to occur."""
     global llock
     llock = {}
 
@@ -136,6 +141,10 @@ def fetch_sdata():
         lock()
 
 def check_sheaders():
+    """
+    Check the headers of sdata. This is a validation that the headers are correct. it is not in the final 2020Q3
+    request version.
+    """
     global sdata, headers, sheaders, missingheaders, badheaders, headererrors, vdata
 
     sheaders = pd.Series(sdata.columns.values.tolist(), dtype="object")
@@ -156,8 +165,7 @@ def check_sheaders():
         headererrors = pd.DataFrame({ key:pd.Series(value) for key, value in mydict.items() })
 
 def fetch_headers():
-    """find mandatory fields"""
-    """Import Template"""
+    """Loads headers from Template."""
 
     if len(llock) == 0:
         global headers, manfields, tpath
@@ -201,6 +209,7 @@ vdata = []
 """ Report Generation Section"""
 
 def make_reports(df):
+    """This generates the calculated fields in aggregate for each report view."""
     # This is a list of report views with thier attributes ex "Report name":("Attribute 1", "Attribute 2")
     global reports_dict, reports_dict_float, sdata
 
@@ -1228,9 +1237,8 @@ def valid(vdata, manfields, sdata):
 
 """ end validations section """
 
-
 def validate(self):
-
+    """Collects new lists from the data load."""
     if len(llock) == 0:
 
         global vmessagelist, sublist, vdflist, sdata, vdata, collist, sublist, clearedlist, rownlist, subtitle
@@ -1268,23 +1276,22 @@ def validate(self):
         lock()
 
 def change_df(self, input_val):
-    """ This changes the DataFrame displayed in the UI pandas table. This is likely to be
-    rebuilt to support many different dataset displays through validation
-    *this runs from buttons as a lambda
+    """ This changes the DataFrame displayed in the UI pandas table.
+    *this runs from buttons as a lambda*
 
     :param self: this is the table that needs to be changed
     :param input_val: a DataFrame, the final dataframe is set in teh below if statement
-    :return:
+    :return: vdata[-1] in the pandastable
+    :functions updateModel, TableModel: These pandastable functions change the DataFrame of the table
+    :functions autoResizeColumns(): replaces the previous pandastable in the UI with the one created to memory in the line above
+
+    'if len(llock) == 0:'
+
+    Check if locked, this prevents it from running when the user has not explicitly
+    indicated they want to reload the data
     """
     # Responds to button
     if len(llock) == 0:
-        """Check if locked, this prevents it from running when the user has not explicitly
-        indicated they want to reload the data
-
-        :functions updateModel, TableModel : These pandastable functions change the DataFrame of the table
-        :functions redraw(): replaces the previous pandastable in the UI with the one created to memory in the line 
-        above 
-        """
         global vdata, sdata, ui_df
 
         vdata = []
@@ -1444,38 +1451,47 @@ def openreportbuttonaction():
     os.startfile(filepath)
 
 
+
+def emailer(text, subject, recipient):
+    """Opens a prepopulated Outlook email if Outlook is open.
+
+    Examples of how to use this are available here:
+
+    https://stackoverflow.com/questions/20956424/how-do-i-generate-and-open-an-outlook-email-with-python-but-do-not-send
+
+    Args:
+        text (str): Body of email.
+
+        subject (str): Subject of email.
+
+        recipient (str): List of recipients example "<person.1@company.com>; <person.2@company.com>"
+    *known issue: This will not run in Pycharm in Adminisrator Mode*
+   """
+    try:
+        outlook = win32.GetActiveObject('Outlook.Application')
+    except:
+        outlook = win32.Dispatch('Outlook.Application')
+    mail = outlook.CreateItem(0)
+    mail.To = recipient
+    mail.Subject = subject
+    mail.HtmlBody = text
+    mail.Display(True)
+
+
 def askassistbuttonaction():
-    """imports function from module, see module for notes"""
+    """callable from the tkinter button command, runs "emailer" function with correct variable values for the
+    "ask for help" email
 
-    def emailer(text, subject, recipient):
-        """Opens a prepopulated Outlook email if Outlook is open.
-
-        Examples of how to use this are available here:
-
-        https://stackoverflow.com/questions/20956424/how-do-i-generate-and-open-an-outlook-email-with-python
-        -but-do-not-send
-
-        Args:
-            text (str): Body of email.
-
-            subject (str): Subject of email.
-
-            recipient (str): List of recipients example "<person.1@company.com>; <person.2@company.com>"
-       """
-        outlook = win32.Dispatch('outlook.application')
-        mail = outlook.CreateItem(0)
-        mail.To = recipient
-        mail.Subject = subject
-        mail.HtmlBody = text
-        mail.Display(True)
-
+    *see uploadassistant.main.emailer(text, subject, recipient)*
+    """
 
     emailer("", "Upload Application Assistance Required", "<Dana.Mark@allianz.com>; <angela.chenxx@allianz.com>; "
                                                 "<Federico.Guerreschi@allianz.com>; <gavin.harmon@allianz.com>")
 
-def finishbuttonaction():
-    """imports function from module, see module for notes"""
 
+def finishbuttonaction():
+    """Creates a zip file from the Output folder, opens the report ‘Global Portfolio Monitoring Report Views.xlsx’.
+    The final submission email, and exits the application."""
     with ZipFile('Output.zip', 'w') as zipObj:
         # Iterate over all the files in directory
         for folderName, subfolders, filenames in os.walk(attachpath):
@@ -1490,59 +1506,38 @@ def finishbuttonaction():
     except FileNotFoundError:
         pass
 
-    def emailer(text, subject, recipient):
-
-        """Opens a prepopulated Outlook email if Outlook is open.
-
-        Examples of how to use this are available here:
-
-        https://stackoverflow.com/questions/20956424/how-do-i-generate-and-open-an-outlook-email-with-python-but-do-not-send
-
-        Args:
-            text (str): Body of email.
-
-            subject (str): Subject of email.
-
-            recipient (str): List of recipients example "<person.1@company.com>; <person.2@company.com>"
-       """
-        outlook = win32.Dispatch('outlook.application')
-        mail = outlook.CreateItem(0)
-        mail.To = recipient
-        mail.Subject = subject
-        mail.HtmlBody = text
-        mail.Attachments.Add(Source=attachzip)
-        mail.Display(True)
-
     emailer(f"Hello GPM,<br><br>I have completed the Data Collection using the Upload Assist"
             f"ant.<br><br>--Replace this text with any comments or explanations not captured in comments or survey.<br>"
             f"If you have made any currency conversions please explain with the LC to Euro figure.--"
             , "GPM 2020.Q3 Data Submission", " <Dana.Mark@allianz.com>;"
             " <angela.chenxx@allianz.com>; <Federico.Guerreschi@allianz.com>; <gavin.harmon@allianz.com>")
 
-
 # mouse moves help control responses to user actions actions slight movement to trigger a command
 def mousemove(self):
     """
     This is used to trigger as action in sequence immediately after a new page has been selected an loaded
-    user effect - page navigated away from, waiting for new page to load, as opposed to "push a button and wait for something to happen"
+    user effect - page navigated away from, waiting for new page to load, as opposed to "push a button and wait for
+    something to happen"
     :param self: the button it is called from
     :return: inperceptable mouse movement
     """
     mouse.move(0, 1, absolute=False, duration=0)
 
-
 # mouse moves help control responses to user actions actions slight movement to trigger a command
 def mouseclick(self):
     """
     This is used to trigger as action insequence immediately after a new page has been selected an loaded
-    user effect - page navigated away from, waiting for new page to load, as opposed to "push a button and wait for something to happen"
+    user effect - page navigated away from, waiting for new page to load, as opposed to "push a button and wait for
+    something to happen"
     :param self: the button it is called from
-    :return: inperceptable mouse movement
+    :return: inperceptable mouse click
     """
     mouse.click()
 
 # for is a command needs to run multiple functions *verify this is being used
 def combine_funcs(*funcs):
+    """This allows for multiple functions to be called in the command option within tkinter buttons"""
+
     def combined_func(*args, **kwargs):
         for f in funcs:
             f(*args, **kwargs)
@@ -1555,6 +1550,10 @@ def resetvn():
 
 
 def exportdata():
+    """
+    This runs when the user clicks "Finalize Submission" It does export all the data in the application as json files,
+    but it also creates the report 'Global Portfolio Monitoring Report Views.xlsx'.
+    """
     global reports_dict, hiddenbutton, rep_cols
     if hasattr(sys, 'frozen'):
         path = os.path.dirname(os.path.realpath(sys.executable).replace("dist", "Output"))
@@ -1608,7 +1607,6 @@ def exportdata():
                           "<federico.guerreschi@allianz.com>, and/or <gavin.harmon@allianz.com>", "", "", "",
                           "Gavin Harmon 02-November-2020"]})}
 
-
         notes.update(reports_dict)
         reports_dict = notes
 
@@ -1618,14 +1616,11 @@ def exportdata():
         tk.messagebox.showerror(title="Error", message="Please close any Excel or Outlook\n"
                                                        "files previously created by Upload\nAssistant to continue.")
 
-# The code for changing pages was derived from: http://stackoverflow.com/questions/7546050/switch-between-two-frames-
-# in-tkinter
-# Tkinter basics can be found here https://docs.python.org/3/library/tk.html
 class root(tk.Tk):
     """this is the main display, it is replaced by other pages as buttons get pushed or lifted to the user display
     The code for changing pages was derived from: http://stackoverflow.com/questions/7546050/switch-between-two-frames
     -in-tkinter
-    Tkinter basics can be found here https://docs.python.org/3/library/tk.html"""
+    Tkinter basics can be found here https://docs.python.org/3/library/tk.html  """
 
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
@@ -1642,8 +1637,8 @@ class root(tk.Tk):
 
         # all pages must exist here
 
-        for F in (StartPage, LoadPage, PageTwo, PageThree, PageFour, PageFive, PageSix, PageSeven, PageEight ,
-                  PageNine , PageTen, PageEleven, PageTwelve, PageThirteen, PageFourteen ):
+        for F in (p01StartPage, p02LoadPage, p04DataSetViewer, p05ReportViewer, p06ValidationView, p07commentpage, p08ValidationReport, p09SaveComments ,
+                  p10SurveyOne , p11SurveyTwo, p12SurveyThree, p13SurveyFour, p14SurveyFive, p15ExitPage ):
 
             frame = F(container, self)
 
@@ -1651,13 +1646,14 @@ class root(tk.Tk):
 
             frame.grid(row=0, column=0, sticky="nsew")
 
-        self.show_frame(StartPage)
+        self.show_frame(p01StartPage)
 
     def show_frame(self, cont):
         frame = self.frames[cont]
         frame.tkraise()
 
 def launchinsts():
+    """Launches image viewer for the "Instructions" slides."""
     global my_label
     global button_forward
     global button_exit
@@ -1763,6 +1759,7 @@ def launchinsts():
 
 
 def launchdefs():
+    """Launches image viewer for the "Metric Definitions" slides."""
     global my_label
     global button_forward
     global button_exit
@@ -1880,6 +1877,7 @@ def launchdefs():
 
 
 def launchabout():
+    """Launches image viewer for the "About GPM" slide."""
     global my_label
     global button_forward
     global button_exit
@@ -1901,9 +1899,9 @@ def launchabout():
     app.mainloop()
 
 
-class StartPage(tk.Frame):
+class p01StartPage(tk.Frame):
     """
-    Home Page
+    This is the start page that launches first.
     """
 
     def __init__(self, parent, controller):
@@ -1954,13 +1952,14 @@ class StartPage(tk.Frame):
         about_gpm_button.place(relx=0.7, rely=.8, relwidth=0.16, relheight=0.12)
 
         submitbutton = tk.Button(home, text="Load Submission", font=('Helvetica', 22), bg='#ff7300', fg="black",
-                                 command=  lambda: controller.show_frame(LoadPage))
+                                 command=  lambda: controller.show_frame(p02LoadPage))
         submitbutton.place(relx=0.395, rely=.85, relwidth=0.18, relheight=0.07)
 
 
-class LoadPage(tk.Frame):
+class p02LoadPage(tk.Frame):
     """
-    Home Page
+    This is a copy of the start page with a "loading data" button. This informs the user that the "load submission"
+    button has been pressed and they are waiting for the application to run.
     """
 
     def __init__(self, parent, controller):
@@ -1987,11 +1986,11 @@ class LoadPage(tk.Frame):
         label.place(relx=0.26, rely=.1365, relwidth=0.475, relheight=0.08)
 
         instructionsbutton = tk.Button(home, text="Submission\nInstructions", font=('Helvetica', 16), bg='#004a93',
-                                       fg="white", command=lambda: controller.show_frame(PageOne))
+                                       fg="white")#, command=lambda: controller.show_frame(p03MetricDefinitions))
         instructionsbutton.place(relx=0.135, rely=.295, relwidth=0.14, relheight=0.07)
 
         MetricDefsbutton = tk.Button(home, text="Metric\nDefinitions", font=('Helvetica', 16), bg='#004a93', fg="white",
-                                     command=lambda: controller.show_frame(PageTwo))
+                                     command=lambda: controller.show_frame(p04DataSetViewer))
         MetricDefsbutton.place(relx=0.415, rely=.295, relwidth=0.14, relheight=0.07)
 
         askassistbutton = tk.Button(home, text="Ask for\nAssistance", font=('Helvetica', 16), bg='#004a93', fg="white",
@@ -2019,39 +2018,39 @@ class LoadPage(tk.Frame):
                                    f'sheet tab named "Ptf_Monitoring_GROSS_Reins" (No spaces).', ]})
 
         submitbutton = tk.Button(home, text="Data loading...", font=('Helvetica', 22), bg='#D3D3D3', fg="black",
-                    command= combine_funcs(lambda:submitbuttonaction(self), lambda: controller.show_frame(PageThree)))
+                    command= combine_funcs(lambda:submitbuttonaction(self), lambda: controller.show_frame(p04DataSetViewer)))
         submitbutton.place(relx=0.395, rely=.85, relwidth=0.18, relheight=0.07)
         submitbutton.bind("<Button-1>", submitbuttonaction)
 
+#
+# class p03MetricDefinitions(tk.Frame):
+#     """
+#     Metric Definitions Page
+#     """
+#
+#     def __init__(self, parent, controller):
+#         tk.Frame.__init__(self, parent)
+#         metricdefs = tk.Frame(self, height=850, width=1150, bg='#dedede')
+#         metricdefs.pack(fill="both", expand=True)
+#
+#         background_image = tk.PhotoImage(file=bgimage)
+#         background_image.image = 31
+#         background_label = tk.Label(metricdefs, image=background_image, height=900, width=1400, )
+#         background_label.image = background_image
+#         background_label.place(relwidth=1, relheight=1)
+#
+#
+#         label = tk.Label(metricdefs, text="Metric Definitions", font=('Helvetica', 22), bg='#004a93', fg="white", )
+#         label.place(relx=0.26, rely=.1365, relwidth=0.475, relheight=0.08)
+#
+#         homebutton = tk.Button(metricdefs, text="Start Over", font=('Helvetica', 16), bg='#004a93', fg="white",
+#                                command=lambda: controller.show_frame(p01StartPage))
+#         homebutton.place(relx=0.395, rely=.925, relwidth=0.18, relheight=0.07, )
 
-class PageTwo(tk.Frame):
+
+class p04DataSetViewer(tk.Frame):
     """
-    Metric Definitions Page
-    """
-
-    def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent)
-        metricdefs = tk.Frame(self, height=850, width=1150, bg='#dedede')
-        metricdefs.pack(fill="both", expand=True)
-
-        background_image = tk.PhotoImage(file=bgimage)
-        background_image.image = 31
-        background_label = tk.Label(metricdefs, image=background_image, height=900, width=1400, )
-        background_label.image = background_image
-        background_label.place(relwidth=1, relheight=1)
-
-
-        label = tk.Label(metricdefs, text="Metric Definitions", font=('Helvetica', 22), bg='#004a93', fg="white", )
-        label.place(relx=0.26, rely=.1365, relwidth=0.475, relheight=0.08)
-
-        homebutton = tk.Button(metricdefs, text="Start Over", font=('Helvetica', 16), bg='#004a93', fg="white",
-                               command=lambda: controller.show_frame(StartPage))
-        homebutton.place(relx=0.395, rely=.925, relwidth=0.18, relheight=0.07, )
-
-
-class PageThree(tk.Frame):
-    """
-    Full Data Set data table
+    Page that displays the full data set data table.
     """
 
     def __init__(self, parent, controller):
@@ -2092,13 +2091,13 @@ class PageThree(tk.Frame):
         ui.show()
 
         nextbutton = tk.Button(submit, text="View Summary\nReports", font=('Helvetica', 16), bg='#004a93', fg="white",
-                               command=lambda: controller.show_frame(PageFour))
+                               command=lambda: controller.show_frame(p05ReportViewer))
         nextbutton.place(relx=0.395, rely=.85, relwidth=0.18, relheight=0.07, )
         submit.bind("<Enter>", mousemove)
 
         homebutton = tk.Button(submit, text="Reload Submission\n"
                                             "and Restart", font=('Helvetica', 16), bg='#004a93', fg="white",
-                               command=lambda: controller.show_frame(StartPage))
+                               command=lambda: controller.show_frame(p01StartPage))
         homebutton.place(relx=0.395, rely=.925, relwidth=0.18, relheight=0.07, )
         homebutton.bind("<Button-1>", unlock)
 
@@ -2112,7 +2111,10 @@ class PageThree(tk.Frame):
         instructionsbutton.place(relx=0.0175, rely=.444, width=175, height=75, )
 
 
-class PageFour(tk.Frame):
+class p05ReportViewer(tk.Frame):
+    """
+    Page that displays the reports as a pandastable.
+    """
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
@@ -2193,14 +2195,14 @@ class PageFour(tk.Frame):
 
 
         nextbutton3 = tk.Button(submit, text="Next Report", font=('Helvetica', 16), bg='#004a93', fg="white",
-                               command=combine_funcs( changerepmessage, reportnext))
+                               command=combine_funcs(changerepmessage, reportnext))
         nextbutton3.place(relx=0.395, rely=.85, relwidth=0.18, relheight=0.07, )
 
         submit.bind("<Enter>", mousemove)
 
         homebutton = tk.Button(submit, text="Reload Submission\n"
                                             "and Restart", font=('Helvetica', 16), bg='#004a93', fg="white",
-                               command=lambda: controller.show_frame(StartPage))
+                               command=lambda: controller.show_frame(p01StartPage))
         homebutton.place(relx=0.395, rely=.925, relwidth=0.18, relheight=0.07, )
         homebutton.bind("<Button-1>", unlock)
 
@@ -2214,12 +2216,12 @@ class PageFour(tk.Frame):
         instructionsbutton.place(relx=0.0175, rely=.444, width=175, height=75, )
 
         hiddenbutton = tk.Button(submit, text="Begin Validation", font=('Helvetica', 16), bg='#004a93', fg="white",
-                               command= lambda: controller.show_frame(PageFive))
+                               command= lambda: controller.show_frame(p06ValidationView))
         hiddenbutton.place(relx=0, rely= 0, relwidth=0, relheight=0, )
 
-class PageFive(tk.Frame):
+class p06ValidationView(tk.Frame):
     """
-    Show Validation result window, loop through
+    Show Validation result window, loop through.
     """
     global vdflist, vmessagelist, sublist, tabledf, uiv, tablemessage, vlock, sublist, submessage
     def __init__(self, parent, controller):
@@ -2300,12 +2302,12 @@ class PageFive(tk.Frame):
             sys.exit()
 
         nextbutton = tk.Button(submit, text="Pass with Comment", font=('Helvetica', 16), bg='#ff7300', fg="black",
-                               command=lambda: controller.show_frame(PageSix))
+                               command=lambda: controller.show_frame(p07commentpage))
         nextbutton.place(relx=0.395, rely=.85, relwidth=0.18, relheight=0.07, )
 
         homebutton = tk.Button(submit, text="Reload Submission\n"
                                             "and Restart", font=('Helvetica', 16), bg='#004a93', fg="white",
-                               command=lambda: controller.show_frame(StartPage))
+                               command=lambda: controller.show_frame(p01StartPage))
         homebutton.place(relx=0.395, rely=.925, relwidth=0.18, relheight=0.07, )
         homebutton.bind("<Button-1>", unlock)
 
@@ -2320,9 +2322,9 @@ class PageFive(tk.Frame):
 
 
 
-class PageSix(tk.Frame):
+class p07commentpage(tk.Frame):
     """
-    comment for a validation pass , loop through
+    Comment page for a validation pass , loop through.
     """
     global vdflist, vmessagelist, tabledf, uiv, tablemessage, label, submessage, sublist
 
@@ -2408,7 +2410,7 @@ class PageSix(tk.Frame):
                 commbox.insert(0, "Please replace this text with an explanation of why the validation cannot be cleared.")
 
                 nextbutton = tk.Button(submit, text="See Results",  bg='#ff7300' , font=('Helvetica', 22) , fg="black",
-                                   command=combine_funcs(lambda: controller.show_frame(PageSeven), resetvn, resultsdraw))
+                                   command=combine_funcs(lambda: controller.show_frame(p08ValidationReport), resetvn, resultsdraw))
                 nextbutton.place(relx=0.38, rely=.45, relwidth=0.2, relheight=0.125, )
 
                 submissionfolderbutton = tk.Button(submit, text="Submission Folder", font=('Helvetica', 16), bg='#004a93', fg="white",
@@ -2418,7 +2420,7 @@ class PageSix(tk.Frame):
 
                 exitbutton = tk.Button(submit, text="Reload Submission\n"
                                             "and Restart", font=('Helvetica', 16), bg='#004a93', fg="white",
-                                       command= combine_funcs(lambda: controller.show_frame(StartPage), rebuild ))
+                                       command= combine_funcs(lambda: controller.show_frame(p01StartPage), rebuild ))
                 exitbutton.place(relx=0.395, rely=.925, relwidth=0.18, relheight=0.07, )
                 exitbutton.bind("<Button-1>", unlock)
 
@@ -2490,12 +2492,12 @@ class PageSix(tk.Frame):
             nextbutton.place(relx=0.395, rely=.85, relwidth=0.18, relheight=0.07, )
 
             falsebutton = tk.Button(submit, text="Save Comment\nand Continue", font=('Helvetica', 16), bg='#ff7300', fg="black",
-                                   command=combine_funcs(savecomment, lambda: controller.show_frame(PageFive),  vadd))
+                                   command=combine_funcs(savecomment, lambda: controller.show_frame(p06ValidationView),  vadd))
             falsebutton.place(relx=0, rely=0, relwidth=0, relheight=0, )
 
             exitbutton = tk.Button(submit, text="Reload Submission\n"
                                             "and Restart", font=('Helvetica', 16), bg='#004a93', fg="white",
-                                   command= combine_funcs(lambda: controller.show_frame(StartPage), rebuild ))
+                                   command= combine_funcs(lambda: controller.show_frame(p01StartPage), rebuild ))
             exitbutton.place(relx=0.395, rely=.925, relwidth=0.18, relheight=0.07, )
 
             subfolderbutton = tk.Button(submit, text="Open Submission\n Folder", font=('Helvetica', 16), bg='#004a93',
@@ -2516,11 +2518,11 @@ class PageSix(tk.Frame):
 
         falsebutton = tk.Button(submit, text="Save Comment\nand Continue", font=('Helvetica', 16), bg='#ff7300',
                                 fg="black",
-                                command=combine_funcs(savecomment, lambda: controller.show_frame(PageFive), vadd))
+                                command=combine_funcs(savecomment, lambda: controller.show_frame(p06ValidationView), vadd))
         falsebutton.place(relx=0, rely=0, relwidth=0, relheight=0, )
 
         exitbutton = tk.Button(submit, text="Start Over", font=('Helvetica', 16), bg='#004a93', fg="white",
-                               command=lambda: controller.show_frame(PageSix) )
+                               command=lambda: controller.show_frame(p07commentpage) )
         exitbutton.place(relx=0.395, rely=.925, relwidth=0.18, relheight=0.07, )
         exitbutton.bind("<Button-1>", unlock)
 
@@ -2534,9 +2536,9 @@ class PageSix(tk.Frame):
         instructionsbutton.place(relx=0.0175, rely=.444, width=175, height=75, )
 
 
-class PageSeven(tk.Frame):
+class p08ValidationReport(tk.Frame):
     """
-    review comments
+    The review comments page.
     """
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
@@ -2571,12 +2573,12 @@ class PageSeven(tk.Frame):
         finishvalbutton.place(relx=0.845, rely=.444, width=175, height=75, )
 
         # nextbutton = tk.Button(submit, text="View Reports", font=('Helvetica', 16), bg='#004a93', fg="white",
-        #                        command=lambda: controller.show_frame(PageFive))
+        #                        command=lambda: controller.show_frame(p06ValidationView))
         # nextbutton.place(relx=0.395, rely=.85, relwidth=0.18, relheight=0.07, )
         submit.bind("<Enter>", mousemove)
 
         exitbutton = tk.Button(submit, text="Start Over", font=('Helvetica', 16), bg='#004a93', fg="white",
-                               command=lambda: controller.show_frame(PageSix) )
+                               command=lambda: controller.show_frame(p07commentpage) )
         exitbutton.place(relx=0.395, rely=.925, relwidth=0.18, relheight=0.07, )
         exitbutton.bind("<Button-1>", unlock)
 
@@ -2585,13 +2587,13 @@ class PageSeven(tk.Frame):
         instructionsbutton.place(relx=0.0175, rely=.444, width=175, height=75, )
 
         global hiddenbutton
-        hiddenbutton = tk.Button(submit, command=   lambda:  controller.show_frame(PageEight) )
+        hiddenbutton = tk.Button(submit, command=   lambda:  controller.show_frame(p09SaveComments) )
         hiddenbutton.place(relx=0, rely=0, width=0, height=0, )
 
 
-class PageEight(tk.Frame):
+class p09SaveComments(tk.Frame):
     """
-    review comments
+    Save comments page.
     """
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
@@ -2639,12 +2641,12 @@ class PageEight(tk.Frame):
         survbox3.bind("<Button-1>", nextpopup)
 
         nextbutton = tk.Button(submit, width=0, height=0, text="Save responses\nand start Survey", font=('Helvetica', 16), bg='#ff7300', fg="black",
-                               command=combine_funcs(capturedata, lambda: controller.show_frame(PageNine)))
+                               command=combine_funcs(capturedata, lambda: controller.show_frame(p10SurveyOne)))
 
 
-class PageNine(tk.Frame):
+class p10SurveyOne(tk.Frame):
     """
-    review comments
+    Survey Page 1.
     """
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
@@ -2708,12 +2710,12 @@ class PageNine(tk.Frame):
         respbox1 = Label(submit, width=100)
 
         nextbutton = tk.Button(submit, text="Save Response\nand Move On", font=('Helvetica', 16), bg='#ff7300', fg="black",
-                               command=combine_funcs(capturedata, lambda: controller.show_frame(PageTen)))
+                               command=combine_funcs(capturedata, lambda: controller.show_frame(p11SurveyTwo)))
 
 
-class PageTen(tk.Frame):
+class p11SurveyTwo(tk.Frame):
     """
-    review comments
+    Survey Page 2.
     """
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
@@ -2778,12 +2780,12 @@ class PageTen(tk.Frame):
         respbox1 = Label(submit, width=100)
 
         nextbutton = tk.Button(submit, text="Save Response\nand Move On", font=('Helvetica', 16), bg='#ff7300',
-                              fg="black", command=combine_funcs(capturedata, lambda: controller.show_frame(PageEleven)))
+                              fg="black", command=combine_funcs(capturedata, lambda: controller.show_frame(p12SurveyThree)))
 
 
-class PageEleven(tk.Frame):
+class p12SurveyThree(tk.Frame):
     """
-    review comments
+    Survey Page 3.
     """
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
@@ -2842,12 +2844,12 @@ class PageEleven(tk.Frame):
         respbox1 = Label(submit, width=100)
 
         nextbutton = tk.Button(submit, text="Save Response\nand Move On", font=('Helvetica', 16), bg='#ff7300', fg="black",
-                               command=combine_funcs(capturedata, lambda: controller.show_frame(PageTwelve)))
+                               command=combine_funcs(capturedata, lambda: controller.show_frame(p13SurveyFour)))
 
 
-class PageTwelve(tk.Frame):
+class p13SurveyFour(tk.Frame):
     """
-    review comments
+    Survey Page 4.
     """
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
@@ -2910,12 +2912,12 @@ class PageTwelve(tk.Frame):
 
         nextbutton = tk.Button(submit, text="Save Response\nand Move On", font=('Helvetica', 16), bg='#ff7300',
                                fg="black",
-                               command=combine_funcs(capturedata, lambda: controller.show_frame(PageThirteen)))
+                               command=combine_funcs(capturedata, lambda: controller.show_frame(p14SurveyFive)))
 
 
-class PageThirteen(tk.Frame):
+class p14SurveyFive(tk.Frame):
     """
-    review comments
+    Survey Page 5.
     """
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
@@ -2964,12 +2966,12 @@ class PageThirteen(tk.Frame):
 
         nextbutton = tk.Button(submit, text="Save Response\nand Move On", font=('Helvetica', 16), bg='#ff7300',
                                fg="black",
-                               command=combine_funcs(capturedata, lambda: controller.show_frame(PageFourteen)))
+                               command=combine_funcs(capturedata, lambda: controller.show_frame(p15ExitPage)))
 
 
-class PageFourteen(tk.Frame):
+class p15ExitPage(tk.Frame):
     """
-    review comments
+    Survey Page 6.
     """
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)

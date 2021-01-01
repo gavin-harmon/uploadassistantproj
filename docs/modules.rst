@@ -1,9 +1,6 @@
 Upload Assistant package
 ===============================
 
-Module contents
----------------
-
 uploadassistant.main module
 -----------------------------------
 
