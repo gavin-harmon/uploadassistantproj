@@ -1,10 +1,11 @@
+
 <!DOCTYPE html>
 <html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<head style="LightBlue;">
+<meta name="viewport" content="width=device-width, initial-scale=1, background-color=DodgerBlue;">
 <style>
 * {box-sizing: border-box}
-body {font-family: Verdana, sans-serif; margin:0}
+body {font-family: Verdana, sans-serif; margin:0; background-color:LightBlue;  }
 .mySlides {display: none}
 img {  margin: 0;  display: block; }
 
@@ -31,6 +32,7 @@ img {  margin: 0;  display: block; }
   user-select: none;
 }
 
+
 /* Position the "next button" to the right */
 .next {
   right: 0;
@@ -48,7 +50,7 @@ img {  margin: 0;  display: block; }
   font-size: 15px;
   padding: 15px 6px;
   position: absolute;
-  bottom: 5px;
+  bottom: -15px;
   width: 100%;
   text-align: center;
 }
@@ -117,32 +119,41 @@ img {  margin: 0;  display: block; }
   <div class="mySlides fade">
     <div class="numbertext"></div><p>
     <img src="https://github.com/gavin-harmon/uploadassistantproj/blob/master/screenshots/1_.png?raw=true" alt="1" class="center"/>
-    <div class="text"> <br><br><br>Custom data software I built and put into production in 2019.  <br> This system vastly improved data quality vs systems administered by much larger departments.  &nbsp;  Please note this is a view of dummy data, meant to test validations. Everything in the below screenshots contains altered data meant to obfuscate any nominal figure or ratio.</div>
+    <div class="text"> Custom software in production from 2019Q4 to 2021Q1.  <br> This system vastly improved data quality vs systems administered by much larger departments. <br> Note, this is a view of dummy data, meant to test validations. Everything in the screenshots ofuscates any nominal figure or ratio.</div>
   </div>
 
   <div class="mySlides fade">
     <div class="numbertext"></div>
     <img src="https://github.com/gavin-harmon/uploadassistantproj/blob/master/screenshots/2_.png?raw=true" alt="" class="center"/>
-    <div class="text">An initial report of the input as loaded. This "PandasTable" interface is exportable and can even be used to do pivots and graphing.</div>
+    <div class="text">An initial report of the input as loaded. This "PandasTable" interface is exportable and can even be used to do pivots and graphing.<br><br></div>
   </div>
 
   <div class="mySlides fade">
     <div class="numbertext"></div>
     <img src="https://github.com/gavin-harmon/uploadassistantproj/blob/master/screenshots/3.1_.png?raw=true" alt="" class="center"/>
-    <div class="text">There are 26 highly custom validation screens that only pop up if there is an issue in the submission.</div>
+    <div class="text">There are 26 highly custom validation screens that only pop up if there is an issue in the submission. 1/2<br><br></div>
   </div>
 
    <div class="mySlides fade">
     <div class="numbertext"></div>
     <img src="https://github.com/gavin-harmon/uploadassistantproj/blob/master/screenshots/3.2_.png?raw=true" alt="" class="center"/>
-    <div class="text">After validations are navigated, there is a full report.  This user would be encouraged to resubmit.</div>
+    <div class="text">There are 26 highly custom validation screens that only pop up if there is an issue in the submission. 2/2<br><br></div>
   </div>   
   
   <div class="mySlides fade">
     <div class="numbertext"></div>
     <img src="https://github.com/gavin-harmon/uploadassistantproj/blob/master/screenshots/4_.png?raw=true" alt="" class="center">
-    <div class="text">Once we have the cleanest data available, the program converts the final version to json format for pipeline ingestion and also produces financial reporting the user can keep as reciepts.</div>
+    <div class="text">After validations are navigated, there is a full report. If this were a real user, they user would be encouraged to resubmit.<br><br></div>
   </div>
+  
+    <div class="mySlides fade">
+      <div class="numbertext"></div>
+      <img src="https://github.com/gavin-harmon/uploadassistantproj/blob/master/screenshots/4_x.png?raw=true" alt="" class="center">
+      <div class="text"> Once we have the cleanest data available, the program converts the final version to json format for pipeline ingestion and also produces financial reporting the user can keep as reciepts. Screenshots  to be added.
+    </div>
+    
+    </div>
+
   
   <!-- Next and previous buttons -->
   <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
@@ -157,6 +168,7 @@ img {  margin: 0;  display: block; }
   <span class="dot" onclick="currentSlide(3)"></span>
   <span class="dot" onclick="currentSlide(4)"></span>
   <span class="dot" onclick="currentSlide(5)"></span>
+  <span class="dot" onclick="currentSlide(6)"></span>
 </div> 
 
 
